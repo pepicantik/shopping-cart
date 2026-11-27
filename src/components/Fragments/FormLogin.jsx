@@ -1,12 +1,19 @@
 import InputForm from "../Elements/Input";
 import Button from "../Elements/Button/button";
+import { useNavigate } from "react-router-dom";
 
 const FormLogin = () => {
+    const navigate = useNavigate();
     const handleLogin = (event) => {
         event.preventDefault();
-        localStorage.setItem('username', event.target.username.value);
-        localStorage.setItem('password', event.target.password.value);
-        window.location.href = "/products"
+        
+        const username = event.target.username.value;
+        localStorage.setItem("username", username);
+
+        const password = event.target.password.value;
+        localStorage.setItem("password", password);
+    
+        navigate("/products");
     };
 
     return (

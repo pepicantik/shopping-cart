@@ -1,4 +1,5 @@
 import Button from "../Elements/Button/button";
+import { Link } from "react-router-dom";
 
 const CardProduct = (props) => {
     const { children } = props;
@@ -11,20 +12,22 @@ const CardProduct = (props) => {
 }
 
 const Header = (props) => {
-    const {image} = props;
+    const {image, id} = props;
+
     return(
-    <a href="#">
+    <Link to={`/product/${id}`}>
         <img src={image} alt="product"
         className="h-52 rounded-t-xl p-5 w-full object-cover" />
-    </a>
+    </Link>
     );
 }
 
 const Body = (props) => {
-    const {children, name} = props;
+    const {children, name, id} = props;
+
     return (
     <div className="px-5 pb-5 h-full">
-        <a href="">
+        <Link to={`/product/${id}`}>
             <h5
             className="text-xl font-semibold text-slate-800">
                 {name}
@@ -32,19 +35,23 @@ const Body = (props) => {
             <p className="mt-2 text-sm leading-relaxed text-slate-500">
                 {children?.substring(0, 100)}...
             </p>
-        </a>
+        </Link>
     </div>
     );
 }
 
 const Footer = (props) => {
     const {price, handleAddToCart, id} = props;
+
     return(
     <div className="flex flex-col gap-3 border-t border-slade-100 px-5 py-4">
         <span className="text-lg font-bold text-slate-800">
-        {" "} {price?.toLocaleString('id-ID', {style: 'currency', currency: "IDR"})}</span>
-        <Button variant="bg-blue-600 hover:bg-blue-700"
-        onClick={() => {handleAddToCart(id)}}
+        {" "} {price?.toLocaleString('id-ID', {style: 'currency', currency: "IDR"})}
+        </span>
+
+        <Button
+        variant="bg-blue-600 hover:bg-blue-700"
+        onClick={() => handleAddToCart(id)}
         className="w-full">Add To Cart</Button>
     </div>
     );

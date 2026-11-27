@@ -1,71 +1,77 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getDetailProduct } from "../services/product.service";
+import { useParams, Link } from "react-router-dom";
 
-const DetailProductPage = () => {
-    const {id} = useParams();
-    const [product, setProduct] = useState({})
+  const product = [
+    {
+        id: 1,
+        name: "Sepatu Baru",
+        price: 1500000,
+        image: "/images/shoes-1.jpg",
+        description: "Sepatu baru dengan desain modern dan nyaman digunakan."
+    },
+    {
+        id: 2,
+        name: "Sepatu Lama",
+        price: 2500000,
+        image: "/images/shoes-3.jpg",
+        description: "Sepatu dengan desain klasik dan kualitas terbaik."
+    },
+    {
+        id: 3,
+        name: "Sepatu Impor",
+        price: 4600000,
+        image: "/images/shoes-4.jpg",
+        description: "Sepatu impor dengan kualitas premium."
+    }
+];
 
-    useEffect(() => {
-        getDetailProduct(id, (data) => {
-            setProduct(data);
-        })
-    }, [id]);
-    console.log(product);
-    
+    const DetailProductPage = () => {
+      const {id} = useParams();
+      const selectedProduct = product.find((item) => item.id === Number(id));
 
-    return (
-        <>
-        <div className="w-full min-h-screen flex justify-center items-center">
-        {Object.keys(product).length > 0 && (
-            <div className="flex font-sans max-w-xl">
-  <div className="flex-none w-48 relative">
-    <img src={product.image}
-    alt={product.title}
-    className="absolute inset-0 w-full h-full object-cover"
-    loading="lazy" />
-  </div>
-  <form className="flex-auto p-6">
-    <div className="flex flex-wrap">
-      <h1 className="flex-auto text-lg font-semibold text-slate-900">
-        {product.title}
-      </h1>
-      <div className="text-lg font-semibold text-slate-500">
-        {product.price}
-      </div>
-      <div className="w-full flex-none text-sm font-medium text-slate-700 mt-2">
-        Review {product.rating.rate}/5 ({product.rating.count})
-       </div>
-    </div>
-    <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
-      <div className="space-x-2 flex text-sm">
-        {product.description}
-      </div>
-    </div>
-    <div className="flex space-x-4 mb-6 text-sm font-medium">
-      <div className="flex-auto flex space-x-4">
-        <button className="h-10 px-6 font-semibold rounded-md bg-black text-white" type="submit">
-          Buy now
-        </button>
-        <button className="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900" type="button">
-          Add to bag
-        </button>
-      </div>
-      <button className="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200" type="button" aria-label="Like">
-        <svg width="20" height="20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-        </svg>
-      </button>
-    </div>
-    <p className="text-sm text-slate-700">
-      Free shipping on all continental US orders.
-    </p>
-  </form>
+    if (!selectedProduct) {
+      return (
+        <div className="p-8 text-center">
+          <h1 className="text-2xl font-bold">
+            Produk Tidak Temukan
+          </h1>
+          <Link to="/products" className="text-blue-600">
+            Kembali ke Produk
+          </Link>
         </div>
-        )};
-        </div>
-        </>
-    );
-}
+      );
+    }
+
+    return(
+      <>
+      <div className="mx-auto max-w-5xl p-8">
+            <Link
+                to="/products"
+                className="mb-6 inline-block text-blue-600 hover:underline"
+            >
+                Kembali ke Produk
+            </Link>
+      <div
+            className="grid grid-cols-1 gap-8 rounded-xl bg-white p-6 shadow-md md:grid-cols-2">
+            <img src={selectedProduct.image} alt={selectedProduct.name}
+            className="h-80 w-full rounded-lg object-cover" />
+
+          <div>
+            <h1 className="mb-4 text-3xl font-bold text-slate-800">
+            {selectedProduct.name}
+            </h1>
+
+            <p className="mb-4 text-xl font-bold text-blue-700">
+              {selectedProduct.price.toLocaleString("id-ID", {style: "currency", currency: "IDR"})}
+            </p>
+
+            <p className="leading-relaxed text-slate-600">
+              {selectedProduct.description}
+            </p>
+          </div>
+          </div>
+          </div>
+      </>
+    )
+    };
 
 export default DetailProductPage;

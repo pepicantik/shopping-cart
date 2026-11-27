@@ -1,5 +1,6 @@
 import CardProduct from "../components/Fragments/CardProduct";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Layouts/Navbar";
 
 const product = [
@@ -55,9 +56,12 @@ const ProductsPage = () => {
             }
         }, [cart, products]);
 
+
+    const navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        window.location.href = "/login";
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        navigate("/login");
     };
 
     const handleAddToCart = (id) => {
@@ -101,10 +105,14 @@ const ProductsPage = () => {
                     {products.length > 0 &&
                         products.map((product) => (
                             <CardProduct key={product.id}>
-                                <CardProduct.Header image={product.image} />
+                                <CardProduct.Header 
+                                image={product.image}
+                                id={product.id} />
 
-                                <CardProduct.Body name={product.name}>
-                                    {product.description}
+                                <CardProduct.Body
+                                name={product.name}
+                                id={product.id}>
+                                {product.description}
                                 </CardProduct.Body>
 
                                 <CardProduct.Footer
@@ -126,7 +134,7 @@ const ProductsPage = () => {
 
                 {/* Agar tabel bisa di-scroll pada mobile */}
                 <div className="overflow-x-auto">
-                    <table className="w-full min-w-[340px] text-left text-sm">
+                    <table className="w-full min-w-85 text-left text-sm">
                         <thead>
                             <tr className="border-b text-slate-600">
                                 <th className="px-2 py-3">Product</th>
